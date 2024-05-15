@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hiltAndroid)
+    id("kotlin-kapt")
 }
 
 android {
@@ -30,17 +32,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
+    }
+    kapt {
+        correctErrorTypes = true
     }
     packaging {
         resources {
@@ -50,6 +55,10 @@ android {
 }
 
 dependencies {
+    /** Modules */
+    implementation(project(":data"))
+    implementation(project("::domain"))
+    implementation(project("::usecases"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -59,6 +68,29 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    /** Dagger-hilt */
+    implementation (libs.hilt.android)
+    kapt (libs.hilt.compiler)
+    kapt (libs.hilt.android.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
+    implementation ("com.squareup.retrofit2:adapter-rxjava2:2.8.1")
+
+    /** Livecycle */
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    /** COIL image */
+    implementation(libs.coil.compose)
+
+
+    /** Network */
+    implementation (libs.okhttp)
+    implementation (libs.retrofit)
+    implementation (libs.logging.interceptor)
+    implementation (libs.converter.gson)
+    implementation (libs.retrofit2.converter.moshi)
+
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
