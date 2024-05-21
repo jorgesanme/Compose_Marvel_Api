@@ -2,17 +2,23 @@ package com.jorgesm.data.mappers
 
 
 import com.jorgesm.data.models.Result
-import com.jorgesm.data.models.Thumbnail
 import com.jorgesm.data.utils.Const
 import com.jorgesm.domain.model.Character
 
 
-fun Result.transformToDomain() =  Character(
-        id = this.id?.toInt(),
-        name = this.name ,
-        description = this.description ,
-        thumbnail =  this.thumbnail?.path?.replace("http","https") + "${Const.IMAGE_SITE}."+ this.thumbnail?.extension
-    )
+fun Result.transformToDomain() = Character(
+    id = this.id?.toInt(),
+    name = this.name,
+    description = this.description,
+    thumbnail = this.thumbnail?.path?.replace(
+        "http",
+        "https"
+    ) + "${Const.IMAGE_SITE}." + this.thumbnail?.extension,
+    comics = this.comics?.available?.toInt(),
+    series = this.series?.available?.toInt(),
+    stories = this.stories?.available?.toInt(),
+    events = this.stories?.available?.toInt(),
+)
 
 fun List<Result>.transformToDomain(): List<Character> =
     this.map { it.transformToDomain() }

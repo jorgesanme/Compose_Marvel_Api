@@ -78,9 +78,9 @@ dependencies {
 
     /** Livecycle */
     implementation(libs.androidx.lifecycle.runtime.compose)
+
     /** COIL image */
     implementation(libs.coil.compose)
-
 
     /** Network */
     implementation (libs.okhttp)
@@ -89,7 +89,8 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.retrofit2.converter.moshi)
 
-
+    /** Navigation */
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -3,11 +3,12 @@ package com.jorgesm.compose_marvel_api
 import com.jorgesm.data.server.api.ApiServices
 import com.jorgesm.data.server.repository.ApiServicesRepositoryImpl
 import com.jorgesm.data.utils.Const
+import com.jorgesm.usecases.GetCharacterByIdUseCase
+import com.jorgesm.usecases.GetCharactersListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -49,4 +50,13 @@ class ApiModule {
     fun provideApiServicesRepositoryImpl(apiServices: ApiServices): ApiServicesRepositoryImpl =
         ApiServicesRepositoryImpl(apiServices)
 
+    @Singleton
+    @Provides
+    fun provideGetCharacterListUseCase(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): GetCharactersListUseCase =
+        GetCharactersListUseCase(apiServicesRepositoryImpl)
+
+    @Singleton
+    @Provides
+    fun provideGetCharacterById(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): GetCharacterByIdUseCase =
+        GetCharacterByIdUseCase(apiServicesRepositoryImpl)
 }
