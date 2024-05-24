@@ -41,14 +41,14 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
-
-
     /** Network */
     implementation (libs.okhttp)
     implementation (libs.retrofit)
     implementation (libs.logging.interceptor)
     implementation (libs.converter.gson)
     implementation (libs.retrofit2.converter.moshi)
+    /** Rx */
+    implementation ("io.reactivex.rxjava2:rxjava:2.2.9")
 
     /** Dagger-hilt */
     implementation (libs.hilt.android)

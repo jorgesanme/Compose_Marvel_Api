@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,27 +48,23 @@ fun CharacterItem(
                 }
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 18.dp),
-        colors = CardDefaults.cardColors( containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(0.5.dp, Color.LightGray)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .paint(
                     painter = painterResource(id = R.drawable.marvel_bg_short),
                     contentScale = ContentScale.Inside,
-                    alignment = Alignment.Center,
-                    sizeToIntrinsics = true
                 ),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             AsyncImage(
                 modifier = Modifier
-                    .size(250.dp)
-                    .clip(RoundedCornerShape(45f))
-                    .padding(vertical = 24.dp),
-                clipToBounds = false,
+                    .padding(vertical = 24.dp)
+                    .size(180.dp)
+                    .clip(RoundedCornerShape(45f)),
                 model = item.thumbnail,
                 contentDescription = "Hero Image",
             )
@@ -77,8 +72,7 @@ fun CharacterItem(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding( horizontal = 8.dp, vertical = 4.dp)
-            ,
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

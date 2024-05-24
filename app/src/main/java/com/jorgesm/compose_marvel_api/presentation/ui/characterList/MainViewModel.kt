@@ -18,14 +18,10 @@ class MainViewModel @Inject constructor(
     private val _list = MutableStateFlow<CharactersResponse>(CharactersResponse(listOf()))
     val list: StateFlow<CharactersResponse> get() = _list
 
-    init {
-        getList()
-    }
-    private fun getList(){
+    fun getList(offset: Int){
         viewModelScope.launch {
-            _list.emit(getCharactersListUseCase.invoke())
+            _list.emit(getCharactersListUseCase.invoke(offset.toString()))
         }
     }
-
 }
 

@@ -12,12 +12,13 @@ interface ApiServices {
     suspend fun getCharacterList(
         @Query("ts") timeStamp: String =  Const.TIME_STAMP.toString(),
         @Query("apikey") apikey: String = Const.API_PUBLIC_KEY,
-        @Query("hash") hash: String? = Utils.createEndPointHash()
+        @Query("hash") hash: String? = Utils.createEndPointHash(),
+        @Query("offset") offset: String
     ): CharacterResponseDTO
 
     @GET(Const.CHARACTER_BY_ID)
-     fun geCharacterById(
-        @Path("characterId")characterId: String,
+     suspend fun geCharacterById(
+        @Path("id")characterId: String,
         @Query("ts") timeStamp: String = Const.TIME_STAMP.toString(),
         @Query("apikey") apikey: String = Const.API_PUBLIC_KEY,
         @Query("hash") hash: String? = Utils.createEndPointHash(),
