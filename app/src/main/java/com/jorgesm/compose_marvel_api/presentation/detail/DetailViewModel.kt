@@ -1,11 +1,10 @@
-package com.jorgesm.compose_marvel_api.presentation.ui.detail
+package com.jorgesm.compose_marvel_api.presentation.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jorgesm.compose_marvel_api.utils.getOneCharacterDetails
+import com.jorgesm.compose_marvel_api.utils.getEmptyCharacterDetails
 import com.jorgesm.domain.model.Character
-import com.jorgesm.usecases.GetCharacterByIdUseCase
+import com.jorgesm.usecases.remote.GetCharacterByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +17,7 @@ class DetailViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _characterDetail = MutableStateFlow<Character>(getOneCharacterDetails())
+    private val _characterDetail = MutableStateFlow(getEmptyCharacterDetails())
     val characterDetail: StateFlow<Character> get() = _characterDetail
 
     fun getCharacterById(itemId: String) {
@@ -27,5 +26,8 @@ class DetailViewModel @Inject constructor(
                 _characterDetail.emit(it.result.first())
             }
         }
+    }
+    fun setFavorite(){
+        _characterDetail.value.isFavorite = !_characterDetail.value.isFavorite
     }
 }

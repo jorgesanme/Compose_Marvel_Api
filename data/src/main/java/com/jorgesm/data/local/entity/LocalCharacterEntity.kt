@@ -1,7 +1,11 @@
-package com.jorgesm.domain.model
+package com.jorgesm.data.local.entity
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Character(
+@Entity(tableName = "localCharacter")
+data class LocalCharacterEntity(
+    @PrimaryKey
     val id: Long,
     val name: String?,
     val description: String?,

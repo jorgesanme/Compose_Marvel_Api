@@ -1,10 +1,8 @@
-package com.jorgesm.compose_marvel_api
+package com.jorgesm.compose_marvel_api.modules
 
 import com.jorgesm.data.server.api.ApiServices
-import com.jorgesm.data.server.repository.ApiServicesRepositoryImpl
+import com.jorgesm.data.server.repositoryImpl.ApiServicesRepositoryImpl
 import com.jorgesm.data.utils.Const
-import com.jorgesm.usecases.GetCharacterByIdUseCase
-import com.jorgesm.usecases.GetCharactersListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,13 +48,5 @@ class ApiModule {
     fun provideApiServicesRepositoryImpl(apiServices: ApiServices): ApiServicesRepositoryImpl =
         ApiServicesRepositoryImpl(apiServices)
 
-    @Singleton
-    @Provides
-    fun provideGetCharacterListUseCase(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): GetCharactersListUseCase =
-        GetCharactersListUseCase(apiServicesRepositoryImpl)
 
-    @Singleton
-    @Provides
-    fun provideGetCharacterById(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): GetCharacterByIdUseCase =
-        GetCharacterByIdUseCase(apiServicesRepositoryImpl)
 }

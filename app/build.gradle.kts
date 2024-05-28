@@ -90,6 +90,12 @@ dependencies {
     implementation (libs.converter.gson)
     implementation (libs.retrofit2.converter.moshi)
 
+    /** Room  */
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation (libs.androidx.room.rxjava2)
+
     /** Navigation */
     implementation(libs.androidx.navigation.compose)
 

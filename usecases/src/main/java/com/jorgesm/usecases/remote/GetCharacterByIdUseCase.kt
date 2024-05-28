@@ -1,7 +1,6 @@
-package com.jorgesm.usecases
+package com.jorgesm.usecases.remote
 
-import com.jorgesm.data.server.repository.RemoteRepository
-import com.jorgesm.domain.model.Character
+import com.jorgesm.domain.repository.RemoteRepository
 import com.jorgesm.domain.model.response.CharactersResponse
 import javax.inject.Inject
 

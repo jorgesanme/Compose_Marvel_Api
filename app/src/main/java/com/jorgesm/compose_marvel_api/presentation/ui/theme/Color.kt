@@ -1,4 +1,4 @@
-package com.jorgesm.compose_marvel_api.ui.theme
+package com.jorgesm.compose_marvel_api.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

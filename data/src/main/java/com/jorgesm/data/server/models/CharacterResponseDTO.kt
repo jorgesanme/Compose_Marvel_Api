@@ -1,4 +1,4 @@
-package com.jorgesm.data.models
+package com.jorgesm.data.server.models
 
 import java.io.Serializable
 
@@ -21,7 +21,7 @@ data class Data(
 )
 
 data class Result(
-    val id: Long? = null,
+    val id: Long ,
     val name: String? = null,
     val description: String? = null,
     val modified: String? = null, // FIXME: ver en doc si viene como long o Date

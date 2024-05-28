@@ -1,4 +1,4 @@
-package com.jorgesm.compose_marvel_api.ui.theme
+package com.jorgesm.compose_marvel_api.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

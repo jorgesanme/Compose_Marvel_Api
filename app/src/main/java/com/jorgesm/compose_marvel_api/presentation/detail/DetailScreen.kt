@@ -1,6 +1,7 @@
-package com.jorgesm.compose_marvel_api.presentation.ui.detail
+package com.jorgesm.compose_marvel_api.presentation.detail
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,6 +45,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.jorgesm.compose_marvel_api.R
 import com.jorgesm.compose_marvel_api.presentation.ui.component.BadBoxCounter
+import com.jorgesm.compose_marvel_api.presentation.ui.component.FavoriteIcon
+import com.jorgesm.compose_marvel_api.presentation.ui.component.NickNameTextField
 import com.jorgesm.domain.model.Character
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingPara@2@meter")
@@ -81,8 +84,8 @@ fun DetailView(
                 horizontalArrangement = Arrangement.Center
 
             ) {
-                ConstraintLayout() {
-                    val (image, textId, textTitle) = createRefs()
+                ConstraintLayout {
+                    val (image, textId, textTitle, favorite, nickName) = createRefs()
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -122,6 +125,17 @@ fun DetailView(
                         contentScale = ContentScale.Fit,
                         contentDescription = "Character image"
                     )
+                    FavoriteIcon(
+                        isFavorite = character.isFavorite,
+                        Modifier
+                            .constrainAs(favorite) {
+                                top.linkTo(image.top)
+                                end.linkTo(image.end)
+                            }
+                            .clickable {
+                                detailViewModel.setFavorite()
+                                Log.i("Yo", "favorito = ${character.isFavorite}")
+                            })
                     Box(
                         modifier = Modifier
                             .background(
@@ -147,9 +161,14 @@ fun DetailView(
                             text = character.id.toString()
                         )
                     }
-
-
+                    NickNameTextField(Modifier.constrainAs(nickName){
+                        top.linkTo(image.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    })
+                    
                 }
+                
             }
             Box(
                 modifier = Modifier

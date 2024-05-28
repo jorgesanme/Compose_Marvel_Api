@@ -56,6 +56,11 @@ dependencies {
     kapt (libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 
+    /** Room  */
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation (libs.androidx.room.rxjava2)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -13,11 +13,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.jorgesm.compose_marvel_api.presentation.ui.detail.DetailView
-import com.jorgesm.compose_marvel_api.presentation.ui.detail.DetailViewModel
-import com.jorgesm.compose_marvel_api.presentation.ui.characterList.CharactersListScreen
-import com.jorgesm.compose_marvel_api.presentation.ui.characterList.MainViewModel
-import com.jorgesm.compose_marvel_api.ui.theme.Compose_Marvel_ApiTheme
+import com.jorgesm.compose_marvel_api.presentation.detail.DetailView
+import com.jorgesm.compose_marvel_api.presentation.detail.DetailViewModel
+import com.jorgesm.compose_marvel_api.presentation.characterList.CharactersListScreen
+import com.jorgesm.compose_marvel_api.presentation.characterList.MainViewModel
+import com.jorgesm.compose_marvel_api.presentation.ui.theme.Compose_Marvel_ApiTheme
 import com.jorgesm.compose_marvel_api.utils.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,8 +56,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-
-
-

@@ -1,8 +1,10 @@
-package com.jorgesm.data.server.repository
+package com.jorgesm.data.server.repositoryImpl
+
 
 import com.jorgesm.data.mappers.transformToDomain
 import com.jorgesm.data.server.api.ApiServices
 import com.jorgesm.domain.model.Character
+import com.jorgesm.domain.repository.RemoteRepository
 import com.jorgesm.domain.model.response.CharactersResponse
 import javax.inject.Inject
 
@@ -11,7 +13,7 @@ class ApiServicesRepositoryImpl @Inject constructor(private val apiServices: Api
 
     override suspend fun getAllCharacters(offset: String): CharactersResponse {
         var result: List<Character> = listOf()
-        apiServices.getCharacterList(offset = offset).data?.results?.let {
+        apiServices.getCharacterList(  offset = offset).data?.results?.let {
             result = it.transformToDomain()
         }
         return CharactersResponse(result)

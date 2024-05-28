@@ -1,4 +1,4 @@
-package com.jorgesm.compose_marvel_api.presentation.ui.characterList
+package com.jorgesm.compose_marvel_api.presentation.characterList
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

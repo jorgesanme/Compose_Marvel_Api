@@ -1,4 +1,4 @@
-package com.jorgesm.data.server.repository
+package com.jorgesm.domain.repository
 
 import com.jorgesm.domain.model.response.CharactersResponse
 
