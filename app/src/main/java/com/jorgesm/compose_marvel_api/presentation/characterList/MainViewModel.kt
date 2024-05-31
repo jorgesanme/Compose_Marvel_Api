@@ -7,6 +7,7 @@ import com.jorgesm.usecases.local.GetLocalCharacterListUseCase
 import com.jorgesm.usecases.local.SaveCharacterInDataBaseUseCase
 import com.jorgesm.usecases.remote.GetCharactersListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,9 +23,22 @@ class MainViewModel @Inject constructor(
     private val _list = MutableStateFlow<CharactersResponse>(CharactersResponse(listOf()))
     val list: StateFlow<CharactersResponse> get() = _list
 
-    fun getList(offset: Int){
+    private val _offset = MutableStateFlow<Int>(0)
+    val offset: StateFlow<Int> get() = _offset
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            getCharactersListUseCase.invoke(_offset.toString()).result.let {
+                saveCharacterInDataBaseUseCase.invoke(it)
+            }
+        }
+    }
+
+    fun getList(){
         viewModelScope.launch {
-            _list.emit(getCharactersListUseCase.invoke(offset.toString()))
+            getLocalCharacterListUseCase.invoke().collect() {
+                _list.emit(it)
+            }
         }
     }
 }

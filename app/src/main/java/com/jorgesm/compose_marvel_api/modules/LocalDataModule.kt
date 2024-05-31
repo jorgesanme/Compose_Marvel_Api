@@ -27,7 +27,7 @@ class LocalDataModule {
 
     @Singleton
     @Provides
-    fun provideLocalRepository(charactersDao: CharactersDao): LocalRepositoryImpl =
+    fun provideLocalRepositoryImpl(charactersDao: CharactersDao): LocalRepositoryImpl =
         LocalRepositoryImpl(charactersDao)
 
 }

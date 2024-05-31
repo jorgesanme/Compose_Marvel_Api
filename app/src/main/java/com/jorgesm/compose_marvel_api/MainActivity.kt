@@ -45,8 +45,8 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Routes.DetailScreen.route, arguments = listOf(navArgument("itemId"){
-                            type = NavType.IntType})){backStackEntry ->
-                            val itemId = backStackEntry.arguments?.getInt("itemId") ?: 0
+                            type = NavType.LongType})){backStackEntry ->
+                            val itemId = backStackEntry.arguments?.getLong("itemId") ?: 0
                             DetailView(detailViewModel = detailViewModel, navHostController = navigationController, itemId = itemId)
 
                         }

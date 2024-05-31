@@ -13,9 +13,9 @@ fun CharactersListScreen(
     mainViewModel: MainViewModel,
     navHostController: NavHostController
 ) {
-    mainViewModel.getList(0)
 
     val list: CharactersResponse by mainViewModel.list.collectAsStateWithLifecycle()
 
+    mainViewModel.getList()
     CharacterList(list = list.result, navHostController)
 }

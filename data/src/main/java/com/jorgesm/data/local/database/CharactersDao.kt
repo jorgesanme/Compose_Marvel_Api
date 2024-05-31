@@ -10,15 +10,17 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CharactersDao {
-    @Query("select * from localCharacter")
+    @Query("SELECT * FROM LocalCharacter")
     fun getAllCharacters(): Flow<List<LocalCharacterEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCharacters(characters: List<LocalCharacterEntity>)
 
-    @Query("select * from localCharacter where id = :id")
-    fun findCharacterById(id: Int): Flow<LocalCharacterEntity>
+    @Query("SELECT * FROM LocalCharacter WHERE id = :id")
+    suspend fun findCharacterById(id: Long): LocalCharacterEntity
 
     @Update
-    fun updateCharacter(item: LocalCharacterEntity)
+    suspend fun updateCharacter(item: LocalCharacterEntity)
+    @Query("SELECT COUNT(id) FROM LOCALCHARACTER")
+    suspend fun charactersCount(): Int
 }

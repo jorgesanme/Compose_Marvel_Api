@@ -1,15 +1,16 @@
 package com.jorgesm.domain.repository
 
 import com.jorgesm.domain.model.Character
+import com.jorgesm.domain.model.response.CharactersResponse
 import kotlinx.coroutines.flow.Flow
 
 interface LocalRepository {
 
-    fun getAllCharacters(): Flow<List<Character>>
+    fun getAllCharacters(): Flow<CharactersResponse>
     suspend fun saveAllCharacters(characters: List<Character>)
 
-    fun findCharacterById(item: Int)
+    suspend fun findCharacterById(item: Long): Character
 
-    fun updateCharacter(item: Character)
+    suspend fun updateCharacter(item: Character)
 
 }

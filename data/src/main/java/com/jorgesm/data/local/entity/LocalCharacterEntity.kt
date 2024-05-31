@@ -3,7 +3,7 @@ package com.jorgesm.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "localCharacter")
+@Entity(tableName = "LocalCharacter")
 data class LocalCharacterEntity(
     @PrimaryKey
     val id: Long,

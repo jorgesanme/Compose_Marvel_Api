@@ -2,6 +2,7 @@ package com.jorgesm.compose_marvel_api.modules
 
 import com.jorgesm.data.local.repositoryImpl.LocalRepositoryImpl
 import com.jorgesm.data.server.repositoryImpl.ApiServicesRepositoryImpl
+import com.jorgesm.usecases.local.GetLocalCharacterById
 import com.jorgesm.usecases.local.GetLocalCharacterListUseCase
 import com.jorgesm.usecases.local.SaveCharacterInDataBaseUseCase
 import com.jorgesm.usecases.remote.GetCharacterByIdUseCase
@@ -35,4 +36,9 @@ class UseCaseModule {
     @Provides
     fun provideSaveCharacterInDataBaseUseCase(localRepository: LocalRepositoryImpl): SaveCharacterInDataBaseUseCase =
         SaveCharacterInDataBaseUseCase(localRepository)
+
+    @Singleton
+    @Provides
+    fun provideGetLocalCharacterByIdUseCase(localRepository: LocalRepositoryImpl): GetLocalCharacterById =
+        GetLocalCharacterById(localRepository)
 }

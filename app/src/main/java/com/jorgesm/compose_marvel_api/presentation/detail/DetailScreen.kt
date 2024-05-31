@@ -54,9 +54,9 @@ import com.jorgesm.domain.model.Character
 fun DetailView(
     detailViewModel: DetailViewModel,
     navHostController: NavHostController,
-    itemId: Int
+    itemId: Long
 ) {
-    detailViewModel.getCharacterById(itemId.toString())
+    detailViewModel.getCharacterById(itemId)
     val character: Character by detailViewModel.characterDetail.collectAsStateWithLifecycle()
 
     Column(
