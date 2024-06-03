@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.jorgesm.compose_marvel_api.R
@@ -43,7 +44,7 @@ fun CharacterItem(
             .size(352.dp, 528.dp)
             .padding(horizontal = 24.dp)
             .clickable {
-                item.id?.let {
+                item.id.let {
                     navHostController.navigate(Routes.DetailScreen.addItemId(it))
                 }
             },
@@ -60,14 +61,33 @@ fun CharacterItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .padding(vertical = 24.dp)
-                    .size(180.dp)
-                    .clip(RoundedCornerShape(45f)),
-                model = item.thumbnail,
-                contentDescription = "Hero Image",
-            )
+            ConstraintLayout {
+                val (image, favorite) = createRefs()
+                AsyncImage(
+                    modifier = Modifier
+                        .padding(vertical = 24.dp)
+                        .constrainAs(image) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                        }
+                        .size(180.dp)
+                        .clip(RoundedCornerShape(45f)),
+                    model = item.thumbnail,
+                    contentDescription = "Hero Image",
+                )
+                FavoriteIcon(
+                    isFavorite = item.isFavorite,
+                    modifier = Modifier
+                        .constrainAs(favorite) {
+                            top.linkTo(image.top)
+                            end.linkTo(image.end, margin = (-22).dp)
+                        }
+                        .padding(top = 0.dp)
+                        .size(60.dp),
+                    isDetails = false,
+                    iconSize = Modifier.size(40.dp)
+                )
+            }
         }
         Column(
             modifier = Modifier
@@ -79,7 +99,7 @@ fun CharacterItem(
             Text(
                 modifier = Modifier.padding(8.dp),
                 textAlign = TextAlign.Justify,
-                text = item.name.toString(), style = TextStyle(
+                text = item.name, style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,
                     textDecoration = TextDecoration.Underline
@@ -87,7 +107,7 @@ fun CharacterItem(
             )
 
             Text(
-                text = item.description.toString(),
+                text = item.description,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Justify,
                 modifier = Modifier.padding(8.dp)

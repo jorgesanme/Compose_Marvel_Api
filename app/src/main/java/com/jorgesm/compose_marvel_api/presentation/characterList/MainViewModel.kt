@@ -20,10 +20,10 @@ class MainViewModel @Inject constructor(
     private val saveCharacterInDataBaseUseCase: SaveCharacterInDataBaseUseCase,
 ) : ViewModel() {
 
-    private val _list = MutableStateFlow<CharactersResponse>(CharactersResponse(listOf()))
+    private val _list = MutableStateFlow(CharactersResponse(listOf()))
     val list: StateFlow<CharactersResponse> get() = _list
 
-    private val _offset = MutableStateFlow<Int>(0)
+    private val _offset = MutableStateFlow(0)
     val offset: StateFlow<Int> get() = _offset
 
     init {
@@ -34,11 +34,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getList(){
+    fun getList() {
         viewModelScope.launch {
-            getLocalCharacterListUseCase.invoke().collect() {
+            getLocalCharacterListUseCase.invoke().collect {
                 _list.emit(it)
             }
+        }
+    }
+
+    fun setNewOffset() {
+        viewModelScope.launch {
+            _offset.emit(_offset.value + 10)
         }
     }
 }

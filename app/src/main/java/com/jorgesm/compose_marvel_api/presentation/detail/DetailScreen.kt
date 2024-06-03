@@ -91,7 +91,7 @@ fun DetailView(
 
             ) {
                 ConstraintLayout {
-                    val (image, textId, textTitle, favorite, nickName) = createRefs()
+                    val (image, textId, textTitle, favorite) = createRefs()
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -138,9 +138,12 @@ fun DetailView(
                                 top.linkTo(image.top)
                                 end.linkTo(image.end)
                             }
+                            .padding(end = 8.dp)
+                            .size(40.dp)
                             .clickable {
                                 detailViewModel.setFavorite(character)
-                            })
+                            }, true, Modifier.size(32.dp)
+                    )
                     Box(
                         modifier = Modifier
                             .background(
@@ -190,14 +193,16 @@ fun DetailView(
                         .padding(vertical = 4.dp, horizontal = 4.dp)
                         .background(Color.Transparent)
                 )
-                Button(onClick = {
-                    detailViewModel.setNickName(
-                        character,
-                        nickNameStatus
-                    )
-                }, modifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .weight(0.4f)) {
+                Button(
+                    onClick = {
+                        detailViewModel.setNickName(
+                            character,
+                            nickNameStatus
+                        )
+                    }, modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .weight(0.4f)
+                ) {
                     Text(text = "Save")
                 }
             }

@@ -21,7 +21,7 @@ fun CharacterList(
         modifier = Modifier
             .fillMaxSize().padding(16.dp)
     ) {
-        items(list, key = { it.id!! }) { character ->
+        items(list, key = { it.id }) { character ->
             CharacterItem(item = character, navHostController = navHostController)
         }
     }
