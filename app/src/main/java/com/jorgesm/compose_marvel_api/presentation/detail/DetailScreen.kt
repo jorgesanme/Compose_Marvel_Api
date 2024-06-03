@@ -1,7 +1,6 @@
 package com.jorgesm.compose_marvel_api.presentation.detail
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,14 +17,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,7 +52,6 @@ import coil.compose.AsyncImage
 import com.jorgesm.compose_marvel_api.R
 import com.jorgesm.compose_marvel_api.presentation.ui.component.BadBoxCounter
 import com.jorgesm.compose_marvel_api.presentation.ui.component.FavoriteIcon
-import com.jorgesm.compose_marvel_api.presentation.ui.component.NickNameTextField
 import com.jorgesm.domain.model.Character
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingPara@2@meter")
@@ -58,6 +63,7 @@ fun DetailView(
 ) {
     detailViewModel.getCharacterById(itemId)
     val character: Character by detailViewModel.characterDetail.collectAsStateWithLifecycle()
+    var nickNameStatus by rememberSaveable { mutableStateOf(character.nickName) }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -102,7 +108,7 @@ fun DetailView(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = character.name.toString(),
+                            text = character.name,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.ExtraBold,
                             modifier = Modifier.padding(horizontal = 16.dp),
@@ -133,8 +139,7 @@ fun DetailView(
                                 end.linkTo(image.end)
                             }
                             .clickable {
-                                detailViewModel.setFavorite()
-                                Log.i("Yo", "favorito = ${character.isFavorite}")
+                                detailViewModel.setFavorite(character)
                             })
                     Box(
                         modifier = Modifier
@@ -161,14 +166,40 @@ fun DetailView(
                             text = character.id.toString()
                         )
                     }
-                    NickNameTextField(Modifier.constrainAs(nickName){
-                        top.linkTo(image.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    })
-                    
                 }
-                
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                OutlinedTextField(
+                    value = nickNameStatus,
+                    onValueChange = { nickNameStatus = it },
+                    label = { Text(text = "nickName") },
+                    maxLines = 1,
+                    trailingIcon = {
+                        if (nickNameStatus.isNotEmpty()) {
+                            IconButton(onClick = { nickNameStatus = "" }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Clear,
+                                    contentDescription = "Delete nickName"
+                                )
+                            }
+                        }
+                    },
+
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(vertical = 4.dp, horizontal = 4.dp)
+                        .background(Color.Transparent)
+                )
+                Button(onClick = {
+                    detailViewModel.setNickName(
+                        character,
+                        nickNameStatus
+                    )
+                }, modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .weight(0.4f)) {
+                    Text(text = "Save")
+                }
             }
             Box(
                 modifier = Modifier
@@ -205,23 +236,19 @@ fun DetailView(
                         imageVector = Icons.Default.AccountBox
                     )
                 }
-
             }
-
             Column(
                 Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
                 Text(
-                    text = character.description.toString(),
+                    text = character.description,
                     overflow = TextOverflow.Ellipsis,
                     textAlign = TextAlign.Justify,
                     modifier = Modifier.padding(8.dp)
                 )
             }
-
-
         }
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -230,7 +257,6 @@ fun DetailView(
                 .fillMaxWidth()
                 .padding(top = 24.dp, start = 16.dp)
         ) {
-
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "back icon",
@@ -241,6 +267,7 @@ fun DetailView(
                     .alignByBaseline()
                     .clickable {
                         navHostController.navigateUp()
+                        detailViewModel.setNickName(character, nickNameStatus)
                     }
             )
         }

@@ -10,8 +10,8 @@ import com.jorgesm.domain.model.response.CharactersResponse
 
 fun Result.transformToDomain() = Character(
     id = this.id,
-    name = this.name,
-    description = this.description,
+    name = this.name ?: "",
+    description = this.description ?: "",
     thumbnail = this.thumbnail?.path?.replace(
         "http",
         "https"
@@ -29,12 +29,21 @@ fun List<Result>.transformToDomain(): List<Character> =
 
 
 fun LocalCharacterEntity.transformFromDDBB() = Character(
-    id, name, description, thumbnail, nickName, isFavorite, comics
+    id = this.id,
+    name = this.name ?: "",
+    description = this.description ?: "",
+    thumbnail = this.thumbnail,
+    nickName = this.nickName ?: "",
+    isFavorite = this.isFavorite ,
+    comics = this.comics ?: 0,
+    series = this.series ?: 0,
+    stories = this.stories ?: 0,
+    events = this.events ?: 0,
 )
 
 fun List<LocalCharacterEntity>.transformFromDDBB(): CharactersResponse {
     val listCharacter: MutableList<Character> = mutableListOf()
-    this.map { listCharacter.add( it.transformFromDDBB()) }
+    this.map { listCharacter.add(it.transformFromDDBB()) }
     return CharactersResponse(listCharacter)
 }
 

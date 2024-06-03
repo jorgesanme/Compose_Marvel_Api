@@ -12,17 +12,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LocalRepositoryImpl @Inject constructor(private val charactersDao: CharactersDao):
+class LocalRepositoryImpl @Inject constructor(private val charactersDao: CharactersDao) :
     LocalRepository {
     override suspend fun saveAllCharacters(characters: List<Character>) {
         charactersDao.insertCharacters(characters = characters.map { it.transformToDDBB() })
     }
     override fun getAllCharacters(): Flow<CharactersResponse> =
-         charactersDao.getAllCharacters().map { it.transformFromDDBB() }
+        charactersDao.getAllCharacters().map { it.transformFromDDBB() }
     override suspend fun findCharacterById(item: Long): Character =
-        withContext(Dispatchers.IO){
-
-        charactersDao.findCharacterById(item).transformFromDDBB()
+        withContext(Dispatchers.IO) {
+            charactersDao.findCharacterById(item).transformFromDDBB()
         }
 
 

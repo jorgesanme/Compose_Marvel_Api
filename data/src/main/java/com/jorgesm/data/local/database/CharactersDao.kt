@@ -13,7 +13,7 @@ interface CharactersDao {
     @Query("SELECT * FROM LocalCharacter")
     fun getAllCharacters(): Flow<List<LocalCharacterEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCharacters(characters: List<LocalCharacterEntity>)
 
     @Query("SELECT * FROM LocalCharacter WHERE id = :id")
