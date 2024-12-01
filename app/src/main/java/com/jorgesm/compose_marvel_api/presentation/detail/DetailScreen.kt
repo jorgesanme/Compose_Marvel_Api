@@ -40,6 +40,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -66,18 +68,30 @@ fun DetailView(
     detailViewModel.getCharacterById(itemId)
     val character: Character by detailViewModel.characterDetail.collectAsStateWithLifecycle()
     var nickNameStatus by rememberSaveable { mutableStateOf(character.nickName) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 32.dp)
+            .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
+        Text(
+            text = "Super Hero Details",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
         Card(
             Modifier
-                .size(400.dp, 600.dp)
-                .padding(horizontal = 8.dp),
+                .fillMaxSize()
+                .padding(horizontal = 8.dp)
+                .weight(1f),
             elevation = CardDefaults.cardElevation(defaultElevation = 18.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
             border = BorderStroke(0.5.dp, Color.LightGray)
@@ -96,7 +110,7 @@ fun DetailView(
                     val (image, textId, textTitle, favorite) = createRefs()
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                            .padding(horizontal = 4.dp)
                             .constrainAs(textTitle) {
                                 top.linkTo(parent.top)
                                 start.linkTo(parent.start)
@@ -105,13 +119,14 @@ fun DetailView(
                             }
                             .background(
                                 color = Color(0x55111D24),
-                                shape = RoundedCornerShape(5f)
+                                shape = RoundedCornerShape(16f)
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = character.name,
+                            text = character.nickName.ifEmpty { character.name },
                             fontSize = 20.sp,
+                            color = Color.White,
                             fontWeight = FontWeight.ExtraBold,
                             modifier = Modifier.padding(horizontal = 16.dp),
                             textAlign = TextAlign.Center,
@@ -120,8 +135,8 @@ fun DetailView(
                     }
                     AsyncImage(
                         modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .size(170.dp)
+                            .padding(horizontal = 8.dp, vertical = 8.dp)
+                            .size(180.dp)
                             .clip(RoundedCornerShape(15f))
                             .constrainAs(image) {
                                 top.linkTo(parent.top)
@@ -140,7 +155,7 @@ fun DetailView(
                                 top.linkTo(image.top)
                                 end.linkTo(image.end)
                             }
-                            .padding(end = 8.dp)
+                            .padding(end = 8.dp, top = 8.dp)
                             .size(40.dp)
                             .clickable {
                                 detailViewModel.setFavorite(character)
@@ -150,9 +165,9 @@ fun DetailView(
                         modifier = Modifier
                             .background(
                                 color = Color(0x88EC1D24),
-                                shape = RoundedCornerShape(15f)
+                                shape = RoundedCornerShape(16f)
                             )
-                            .size(width = 170.dp, height = 32.dp)
+                            .size(width = 100.dp, height = 32.dp)
                             .constrainAs(textId) {
                                 bottom.linkTo(image.bottom)
                                 start.linkTo(image.start)
@@ -173,11 +188,22 @@ fun DetailView(
                     }
                 }
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+
                 OutlinedTextField(
                     value = nickNameStatus,
                     onValueChange = { nickNameStatus = it },
-                    label = { Text(text = "nickName") },
+                    label = {
+                        Text(
+                            text = "nickName",
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center
+                        )
+                    },
                     maxLines = 1,
                     trailingIcon = {
                         if (nickNameStatus.isNotEmpty()) {
@@ -197,10 +223,10 @@ fun DetailView(
                 )
                 Button(
                     onClick = {
-                        detailViewModel.setNickName(
-                            character,
-                            nickNameStatus
-                        )
+                        detailViewModel.setNickName(character, nickNameStatus)
+                        nickNameStatus = ""
+                        keyboardController?.hide()
+                        focusManager.clearFocus()
                     }, modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .weight(0.4f)
@@ -277,6 +303,10 @@ fun DetailView(
                     .clickable {
                         navHostController.navigateUp()
                         detailViewModel.setNickName(character, nickNameStatus)
+                        nickNameStatus = ""
+                        keyboardController?.hide()
+                        focusManager.clearFocus()
+
                     }
             )
         }

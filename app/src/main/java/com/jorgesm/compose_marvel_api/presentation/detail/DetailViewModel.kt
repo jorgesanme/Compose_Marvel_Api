@@ -8,6 +8,7 @@ import com.jorgesm.usecases.local.GetLocalCharacterByIdUseCase
 import com.jorgesm.usecases.local.UpdateLocalCharacterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,7 +40,7 @@ class DetailViewModel @Inject constructor(
 
     fun setNickName(item: Character, nickname: String){
         viewModelScope.launch(Dispatchers.IO) {
-            _characterDetail.emit(item.copy(nickName = nickname))
+           async { _characterDetail.emit(item.copy(nickName = nickname))}.await()
             updateLocalCharacterUseCase.invoke(_characterDetail.value)
         }
     }
