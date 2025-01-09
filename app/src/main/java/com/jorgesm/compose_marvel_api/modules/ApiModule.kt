@@ -34,19 +34,19 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitServices(client: OkHttpClient): ApiServices {
+    fun provideRetrofitServices(client: OkHttpClient): com.jorgesm.data.server.api.ApiServices {
         return Retrofit.Builder()
-            .baseUrl(Const.BASE_URL)
+            .baseUrl(com.jorgesm.data.utils.Const.BASE_URL)
             .client(client)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ApiServices::class.java)
+            .build().create(com.jorgesm.data.server.api.ApiServices::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideApiServicesRepositoryImpl(apiServices: ApiServices): ApiServicesRepositoryImpl =
-        ApiServicesRepositoryImpl(apiServices)
+    fun provideApiServicesRepositoryImpl(apiServices: com.jorgesm.data.server.api.ApiServices): com.jorgesm.data.server.repositoryImpl.ApiServicesRepositoryImpl =
+        com.jorgesm.data.server.repositoryImpl.ApiServicesRepositoryImpl(apiServices)
 
 
 }

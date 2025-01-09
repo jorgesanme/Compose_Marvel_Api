@@ -4,8 +4,19 @@ plugins {
     id("kotlin-kapt")
 }
 
+/*java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+    }
+}*/
+
 android {
-    namespace = "com.jorgesm.data"
+    namespace = "com.jorgesm.domain"
     compileSdk = 35
 
     defaultConfig {
@@ -32,7 +43,6 @@ android {
         jvmTarget = "17"
     }
 }
-
 
 dependencies {
 

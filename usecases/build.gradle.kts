@@ -48,11 +48,11 @@ android {
 
 dependencies {
 
-    implementation (project(":data"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
     /** Dagger-hilt */
     implementation (libs.hilt.android)
-    implementation(project(":domain"))
     kapt (libs.hilt.compiler)
     kapt (libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)

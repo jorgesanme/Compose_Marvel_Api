@@ -22,5 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "Compose_Marvel_Api"
 include(":app")
 include(":data")
-include(":usecases")
 include(":domain")
+include(":usecases")
