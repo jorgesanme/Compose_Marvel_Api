@@ -3,11 +3,12 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hiltAndroid)
     id("kotlin-kapt")
+    alias(libs.plugins.jetbrains.kotlinx.serialization)
 }
 
 android {
     namespace = "com.jorgesm.compose_marvel_api"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.jorgesm.compose_marvel_api"
@@ -42,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     kapt {
         correctErrorTypes = true
@@ -100,6 +101,7 @@ dependencies {
 
     /** Navigation */
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

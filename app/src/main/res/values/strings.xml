@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Compose_Marvel_Api</string>
+
+    <string name="main_title">List of Super Hero</string>
+    <string name="detail_title">Super Hero Details</string>
+    <string name="detail_textField_hint">nickName</string>
+    <string name="detail_button_save_title">Save</string>
+
+    <string name="detail_badBoxCounter_title_comics">Comics</string>
+    <string name="detail_badBoxCounter_title_events">Events</string>
+    <string name="detail_badBoxCounter_title_series">Series</string>
+    <string name="detail_badBoxCounter_title_stories">Stories</string>
+
+    <string name="main_previous_arrow_content_description">previous hero</string>
+    <string name="main_forward_arrow_content_description">next hero</string>
+    <string name="detail_character_img_content_description">Character image</string>
+    <string name="detail_arrow_back_icon_content_description">back icon</string>
+    <string name="detail_textField_icon_remove_content_description">Delete nickName</string>
+    <string name="favorite_icon_content_description">Favorite Icon</string>
+    <string name="loading_title">Loading…</string>
+    <string name="badBoxCounter_icon_content_description">Icon %1$s</string>
 </resources>

@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="marvel_red">#F3BC0505</color>
+    <color name="marvel_red_opaque">#F3613030</color>
+    <color name="marvel_red_translucent">#88EC1D24</color>
+    <color name="marvel_blue_translucent">#A21B50EB</color>
 </resources>
