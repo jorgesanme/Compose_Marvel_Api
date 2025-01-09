@@ -21,24 +21,29 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
-import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
+import com.jorgesm.compose_marvel_api.R
 import com.jorgesm.domain.model.Character
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
@@ -47,21 +52,23 @@ import kotlin.math.absoluteValue
 @Composable
 fun CarouselCard(
     list: List<Character>,
-    navHostController: NavHostController
+    navigateToDetail: (Long)-> Unit,
+    searchNewList:() ->Unit
 ) {
-    val pagerState = rememberPagerState(initialPage = 2)
+    val pagerState = rememberPagerState(initialPage = 1)
     val scope = rememberCoroutineScope()
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Text(
-            text = " List of Super Hero",
+            text = stringResource(R.string.main_title),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 24.dp),
+                .padding(top = 12.dp),
             textAlign = TextAlign.Center,
-            fontSize = 18.sp,
+            color = colorResource(R.color.marvel_red),
+            fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
 
@@ -73,6 +80,10 @@ fun CarouselCard(
         ) {
             IconButton(
                 enabled = pagerState.currentPage > 0,
+                colors = IconButtonDefaults.iconButtonColors(
+                    contentColor = colorResource(R.color.marvel_red),
+                    disabledContentColor = colorResource(R.color.marvel_red_opaque)
+                ),
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(pagerState.currentPage - 1)
@@ -80,54 +91,66 @@ fun CarouselCard(
                 }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "previous hero"
+                    contentDescription = stringResource(R.string.main_previous_arrow_content_description),
                 )
 
             }
             HorizontalPager(
                 count = list.size,
                 state = pagerState,
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 24.dp),
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(1f)
             ) { page ->
                 Card(
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier.graphicsLayer {
-                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-                        lerp(
-                            start = 0.50f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        ).also { scale ->
-                            scaleX = scale
-                            scaleY = scale
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.background(Color.Transparent)
+                        .graphicsLayer {
+                            val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+                            lerp(
+                                start = 0.50f,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            ).also { scale ->
+                                scaleX = scale
+                                scaleY = scale
+                            }
+                            alpha = lerp(
+                                start = 0.50f,
+                                stop = 1f,
+                                fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            )
                         }
-                        alpha = lerp(
-                            start = 0.50f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        )
-                    },
+                        .shadow(
+                            elevation = 8.dp,
+                            shape = RectangleShape,
+                            clip = false,
+                            ambientColor = colorResource(R.color.marvel_red),
+                            spotColor = colorResource(R.color.marvel_red),
+                        ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    colors = CardDefaults.cardColors(containerColor = Color.White ),
                 ) {
-                    CharacterItem(item = list[page], navHostController = navHostController)
+                    CharacterItem(item = list[page], navigateToDetail)
                 }
 
             }
             IconButton(
-                enabled = pagerState.currentPage < pagerState.pageCount - 1,
+                enabled = pagerState.currentPage < pagerState.pageCount -1,
+                colors = IconButtonDefaults.iconButtonColors(
+                    contentColor = colorResource(R.color.marvel_red),
+                    disabledContentColor = colorResource(R.color.marvel_red_opaque)
+                ),
                 onClick = {
                     scope.launch {
-                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = "next hero"
+                    contentDescription = stringResource(R.string.main_forward_arrow_content_description)
                 )
             }
         }
@@ -135,11 +158,14 @@ fun CarouselCard(
             modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 12.dp),
+                .padding(start = 36.dp, end =  36.dp, top = 8.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(list.size) {
-                val color = if (pagerState.currentPage == it) Color.DarkGray else Color.Gray
+                val color = if (pagerState.currentPage == it)
+                    colorResource(R.color.marvel_red)
+                else
+                    colorResource(R.color.marvel_red_opaque)
                 Box(modifier = Modifier
                     .padding(2.dp)
                     .clip(CircleShape)

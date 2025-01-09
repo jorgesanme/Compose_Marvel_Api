@@ -16,7 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,44 +27,42 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.jorgesm.compose_marvel_api.R
-import com.jorgesm.compose_marvel_api.utils.Routes
 import com.jorgesm.domain.model.Character
 
 @Composable
 fun CharacterItem(
     item: Character,
-    navHostController: NavHostController
+    navigateToDetail: (Long) -> Unit,
 ) {
- Column( modifier = Modifier
-            .fillMaxSize().padding(24.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
             .clickable {
-                item.id.let {
-                    navHostController.navigate(Routes.DetailScreen.addItemId(it))
-                }
-            },
+                navigateToDetail(item.id)
+            }
     ) {
         Row(
-            modifier = Modifier
-                .paint(
-                    painter = painterResource(id = R.drawable.marvel_bg_short),
-                    contentScale = ContentScale.Inside,
-                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            ConstraintLayout {
+            ConstraintLayout(
+                modifier = Modifier.paint(
+                    painter = painterResource(id = R.drawable.marvel_bg_short),
+                    contentScale = ContentScale.Inside,
+                )
+            ) {
                 val (image, favorite) = createRefs()
                 AsyncImage(
                     modifier = Modifier
-                        .padding(vertical = 18.dp)
                         .constrainAs(image) {
-                            top.linkTo(parent.top)
+                            top.linkTo(parent.top, 8.dp)
+                            end.linkTo(parent.end)
                             start.linkTo(parent.start)
+                            bottom.linkTo(parent.bottom, 8.dp)
                         }
                         .size(180.dp)
                         .clip(RoundedCornerShape(18f)),
@@ -71,7 +71,7 @@ fun CharacterItem(
                         .crossfade(true)
                         .scale(Scale.FILL)
                         .build(),
-                    contentDescription = "Hero Image",
+                    contentDescription = stringResource(R.string.detail_character_img_content_description),
                 )
                 FavoriteIcon(
                     isFavorite = item.isFavorite,
@@ -97,7 +97,9 @@ fun CharacterItem(
             Text(
                 modifier = Modifier.padding(8.dp),
                 textAlign = TextAlign.Justify,
-                text = item.name, style = TextStyle(
+                text = item.name,
+                color = colorResource(R.color.marvel_red),
+                style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,
                     textDecoration = TextDecoration.Underline
@@ -108,6 +110,7 @@ fun CharacterItem(
                 text = item.description,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Justify,
+                color = colorResource(R.color.marvel_red_opaque),
                 modifier = Modifier.padding(top = 8.dp)
             )
         }
