@@ -23,6 +23,7 @@ retrofit = "2.11.0"
 roomRuntime = "2.6.1"
 accompanist-pager = "0.20.0"
 kotlinSerialization = "1.6.3"
+jetbrainsKotlinJvm = "1.9.24"
 
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
@@ -68,5 +69,6 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 hiltAndroid = {id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid"}
 jetbrains-kotlinx-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 

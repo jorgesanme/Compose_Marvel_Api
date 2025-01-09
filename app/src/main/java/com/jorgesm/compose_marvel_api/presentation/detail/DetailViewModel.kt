@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesm.compose_marvel_api.utils.getEmptyCharacterDetails
 import com.jorgesm.domain.model.Character
-import com.jorgesm.usecases.local.GetLocalCharacterByIdUseCase
-import com.jorgesm.usecases.local.UpdateLocalCharacterUseCase
+import com.jorgesm.casodeuso.local.GetLocalCharacterByIdUseCase
+import com.jorgesm.casodeuso.local.UpdateLocalCharacterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getLocalCharacterById: GetLocalCharacterByIdUseCase,
-    private val updateLocalCharacterUseCase: UpdateLocalCharacterUseCase
+    private val getLocalCharacterById: com.jorgesm.casodeuso.local.GetLocalCharacterByIdUseCase,
+    private val updateLocalCharacterUseCase: com.jorgesm.casodeuso.local.UpdateLocalCharacterUseCase
 ) : ViewModel() {
 
     private val _characterDetail = MutableStateFlow(getEmptyCharacterDetails())

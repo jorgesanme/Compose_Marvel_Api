@@ -1,4 +1,4 @@
-package com.jorgesm.usecases.remote
+package com.jorgesm.casodeuso.remote
 
 import com.jorgesm.domain.repository.RemoteRepository
 import com.jorgesm.domain.model.response.CharactersResponse

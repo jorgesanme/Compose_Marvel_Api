@@ -1,4 +1,4 @@
-package com.jorgesm.usecases.local
+package com.jorgesm.casodeuso.local
 
 import com.jorgesm.domain.model.response.CharactersResponse
 import com.jorgesm.domain.repository.LocalRepository
