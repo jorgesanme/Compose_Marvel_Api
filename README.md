@@ -11,9 +11,9 @@ Con respecto al patron de presentación, se ha optado por el  **MVVM**
 El proyecto se construye con una arquitectura por capas. Las mismas estan localizadas en 
 
 ## IMAGEN
-<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/open.gif" width="200" height="350" />|
-<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/segundo.gif" width="200" height="350" />|
-<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/detalles.gif" width="200" height="350" />|
+<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/open.gif" width="160" height="350" />|
+<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/segundo.gif" width="160" height="350" />|
+<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/detalles.gif" width="160" height="350" />|
 
 mucho bla bla bla
 
