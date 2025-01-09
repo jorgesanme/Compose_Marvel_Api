@@ -8,7 +8,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import com.jorgesm.compose_marvel_api.R
 
 @Composable
 fun FavoriteIcon(isFavorite: Boolean, modifier: Modifier, isDetails: Boolean, iconSize: Modifier) {
@@ -20,16 +22,16 @@ fun FavoriteIcon(isFavorite: Boolean, modifier: Modifier, isDetails: Boolean, ic
             Icon(
                 modifier = iconSize,
                 imageVector = Icons.Default.Favorite,
-                contentDescription = "Favorite Icon",
-                tint = Color.Red
+                contentDescription = stringResource(R.string.favorite_icon_content_description),
+                tint = colorResource( R.color.marvel_red )
             )
         else {
             if (isDetails)
                 Icon(
                     modifier = iconSize,
                     imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = "Favorite Icon",
-                    tint = Color.Red
+                    contentDescription = stringResource(R.string.favorite_icon_content_description),
+                    tint = colorResource(R.color.marvel_red_opaque)
                 )
         }
     }
