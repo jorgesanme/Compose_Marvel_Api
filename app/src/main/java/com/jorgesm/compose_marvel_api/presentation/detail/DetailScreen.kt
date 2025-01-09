@@ -69,7 +69,6 @@ import coil.compose.AsyncImage
 import com.jorgesm.compose_marvel_api.R
 import com.jorgesm.compose_marvel_api.presentation.ui.component.BadBoxCounter
 import com.jorgesm.compose_marvel_api.presentation.ui.component.FavoriteIcon
-import com.jorgesm.domain.model.Character
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingPara@2@meter")
 @Composable
@@ -78,7 +77,7 @@ fun DetailView(
     onBackPressed: () -> Unit,
     itemId: Long
 ) {
-    val character: Character by detailViewModel.characterDetail.collectAsStateWithLifecycle()
+    val character: com.jorgesm.domain.model.Character by detailViewModel.characterDetail.collectAsStateWithLifecycle()
     var nickNameStatus by rememberSaveable { mutableStateOf(character.nickName) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current

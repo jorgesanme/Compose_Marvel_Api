@@ -1,6 +1,6 @@
-package com.jorgesm.casodeuso.remote
+package com.jorgesm.usecases.remote
 
-import com.jorgesm.domain.repository.RemoteRepository
+import com.jorgesm.domain.repositoy.RemoteRepository
 import com.jorgesm.domain.model.response.CharactersResponse
 import javax.inject.Inject
 

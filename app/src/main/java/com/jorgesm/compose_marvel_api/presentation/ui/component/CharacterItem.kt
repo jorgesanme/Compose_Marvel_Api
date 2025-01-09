@@ -31,11 +31,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.jorgesm.compose_marvel_api.R
-import com.jorgesm.domain.model.Character
 
 @Composable
 fun CharacterItem(
-    item: Character,
+    item: com.jorgesm.domain.model.Character,
     navigateToDetail: (Long) -> Unit,
 ) {
     Column(

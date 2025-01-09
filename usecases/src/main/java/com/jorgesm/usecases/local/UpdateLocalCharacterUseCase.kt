@@ -1,7 +1,7 @@
-package com.jorgesm.casodeuso.local
+package com.jorgesm.usecases.local
 
 import com.jorgesm.domain.model.Character
-import com.jorgesm.domain.repository.LocalRepository
+import com.jorgesm.domain.repositoy.LocalRepository
 import javax.inject.Inject
 
 class UpdateLocalCharacterUseCase @Inject constructor(

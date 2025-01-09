@@ -4,9 +4,20 @@ plugins {
     id("kotlin-kapt")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 android {
-    namespace = "com.jorgesm.usecases"
-    compileSdk = 34
+    namespace = "com.jorgesm.casodeuso"
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 26
@@ -33,13 +44,15 @@ android {
     }
 }
 
+
+
 dependencies {
 
-    implementation( project(":domain"))
     implementation (project(":data"))
 
     /** Dagger-hilt */
     implementation (libs.hilt.android)
+    implementation(project(":domain"))
     kapt (libs.hilt.compiler)
     kapt (libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)

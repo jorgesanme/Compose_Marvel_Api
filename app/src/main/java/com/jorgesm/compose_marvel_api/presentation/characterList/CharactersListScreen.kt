@@ -7,7 +7,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jorgesm.compose_marvel_api.presentation.ui.component.CarouselCard
 import com.jorgesm.compose_marvel_api.presentation.ui.component.LoadingIndicator
-import com.jorgesm.domain.model.response.CharactersResponse
 
 
 @Composable
@@ -15,7 +14,7 @@ fun CharactersListScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     navigateToDetail: (Long)-> Unit
 ) {
-    val list: CharactersResponse by mainViewModel.list.collectAsStateWithLifecycle()
+    val list: com.jorgesm.domain.model.response.CharactersResponse by mainViewModel.list.collectAsStateWithLifecycle()
     val isLoading: Boolean by mainViewModel.isLoading.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) { mainViewModel.getList() }

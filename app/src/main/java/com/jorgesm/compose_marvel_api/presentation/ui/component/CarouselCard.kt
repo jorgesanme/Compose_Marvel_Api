@@ -44,14 +44,13 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.jorgesm.compose_marvel_api.R
-import com.jorgesm.domain.model.Character
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CarouselCard(
-    list: List<Character>,
+    list: List<com.jorgesm.domain.model.Character>,
     navigateToDetail: (Long)-> Unit,
     searchNewList:() ->Unit
 ) {

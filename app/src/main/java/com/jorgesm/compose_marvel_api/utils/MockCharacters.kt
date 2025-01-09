@@ -1,9 +1,7 @@
 package com.jorgesm.compose_marvel_api.utils
 
-import com.jorgesm.domain.model.Character
-
-fun getEmptyCharacterDetails(): Character {
-    return Character(
+fun getEmptyCharacterDetails(): com.jorgesm.domain.model.Character {
+    return com.jorgesm.domain.model.Character(
         id = 0,
         name = "",
         description = "",

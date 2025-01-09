@@ -2,10 +2,9 @@ package com.jorgesm.compose_marvel_api.presentation.characterList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jorgesm.domain.model.response.CharactersResponse
-import com.jorgesm.casodeuso.local.GetLocalCharacterListUseCase
-import com.jorgesm.casodeuso.local.SaveCharacterInDataBaseUseCase
-import com.jorgesm.casodeuso.remote.GetCharactersListUseCase
+import com.jorgesm.usecases.local.GetLocalCharacterListUseCase
+import com.jorgesm.usecases.local.SaveCharacterInDataBaseUseCase
+import com.jorgesm.usecases.remote.GetCharactersListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,8 +22,8 @@ class MainViewModel @Inject constructor(
         const val NUMBER_OFFSET_PAGE = 10
     }
 
-    private val _list = MutableStateFlow(CharactersResponse(listOf()))
-    val list: StateFlow<CharactersResponse> get() = _list
+    private val _list = MutableStateFlow(com.jorgesm.domain.model.response.CharactersResponse(listOf()))
+    val list: StateFlow<com.jorgesm.domain.model.response.CharactersResponse> get() = _list
     private val _isLoading = MutableStateFlow<Boolean>(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 

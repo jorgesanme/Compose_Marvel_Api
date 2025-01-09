@@ -59,8 +59,7 @@ dependencies {
     /** Modules */
     implementation(project(":data"))
     implementation(project("::domain"))
-//    implementation(project("::usecases"))
-    implementation(project("::casodeuso"))
+    implementation(project("::usecases"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
