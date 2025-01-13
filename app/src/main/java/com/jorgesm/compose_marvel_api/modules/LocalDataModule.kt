@@ -19,15 +19,17 @@ class LocalDataModule {
     @Provides
     fun provideDatabase(
         @ApplicationContext app: Context
-    ) = Room.databaseBuilder(app, com.jorgesm.data.local.database.AppDataBase::class.java, "compose_marvel_DDBB").build()
+    ) = Room.databaseBuilder(app, AppDataBase::class.java, "compose_marvel_DDBB").build()
 
     @Singleton
     @Provides
-    fun provideCharactersDao(dataBase: com.jorgesm.data.local.database.AppDataBase) = dataBase.charactersDao()
+    fun provideCharactersDao(dataBase: AppDataBase) = dataBase.charactersDao()
 
     @Singleton
     @Provides
-    fun provideLocalRepositoryImpl(charactersDao: com.jorgesm.data.local.database.CharactersDao): com.jorgesm.data.local.repositoryImpl.LocalRepositoryImpl =
-        com.jorgesm.data.local.repositoryImpl.LocalRepositoryImpl(charactersDao)
+    fun provideLocalRepositoryImpl(charactersDao: CharactersDao): LocalRepositoryImpl =
+        LocalRepositoryImpl(charactersDao)
+
+
 
 }

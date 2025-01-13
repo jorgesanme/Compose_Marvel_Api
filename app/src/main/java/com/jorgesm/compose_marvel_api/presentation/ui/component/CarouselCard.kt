@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -44,18 +46,22 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.jorgesm.compose_marvel_api.R
+import com.jorgesm.domain.model.Character
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun CarouselCard(
-    list: List<com.jorgesm.domain.model.Character>,
-    navigateToDetail: (Long)-> Unit,
-    searchNewList:() ->Unit
+    list: List<Character>,
+    initialPage: Int,
+    navigateToDetail: (Long) -> Unit,
+    searchNewList: () -> Unit
 ) {
-    val pagerState = rememberPagerState(initialPage = 1)
+    val pagerState = rememberPagerState(initialPage = 0)
+    val buttonState = rememberLazyListState(initialPage)
     val scope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -97,6 +103,7 @@ fun CarouselCard(
             HorizontalPager(
                 count = list.size,
                 state = pagerState,
+                reverseLayout = true,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
                 modifier = Modifier
                     .fillMaxSize()
@@ -104,7 +111,8 @@ fun CarouselCard(
             ) { page ->
                 Card(
                     shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.background(Color.Transparent)
+                    modifier = Modifier
+                        .background(Color.Transparent)
                         .graphicsLayer {
                             val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
                             lerp(
@@ -129,21 +137,21 @@ fun CarouselCard(
                             spotColor = colorResource(R.color.marvel_red),
                         ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White ),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                 ) {
                     CharacterItem(item = list[page], navigateToDetail)
                 }
 
             }
             IconButton(
-                enabled = pagerState.currentPage < pagerState.pageCount -1,
+                enabled = pagerState.currentPage < pagerState.pageCount - 1,
                 colors = IconButtonDefaults.iconButtonColors(
                     contentColor = colorResource(R.color.marvel_red),
                     disabledContentColor = colorResource(R.color.marvel_red_opaque)
                 ),
                 onClick = {
                     scope.launch {
-                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }
                 }
             ) {
@@ -153,14 +161,35 @@ fun CarouselCard(
                 )
             }
         }
-        Row(
+        if (pagerState.currentPage >= pagerState.pageCount - 1) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    "Ver Más",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp)
+                        .clickable { searchNewList() },
+                    textAlign = TextAlign.Center,
+                    color = colorResource(R.color.marvel_red),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+        LazyRow(
             modifier = Modifier
                 .height(60.dp)
                 .fillMaxWidth()
-                .padding(start = 36.dp, end =  36.dp, top = 8.dp),
-            horizontalArrangement = Arrangement.Center
+                .padding(start = 36.dp, end = 36.dp, top = 8.dp),
+            horizontalArrangement = Arrangement.Center,
+            state = buttonState
         ) {
-            repeat(list.size) {
+
+            items(pagerState.pageCount) {
                 val color = if (pagerState.currentPage == it)
                     colorResource(R.color.marvel_red)
                 else
@@ -171,7 +200,9 @@ fun CarouselCard(
                     .size(20.dp)
                     .background(color)
                     .clickable {
-                        scope.launch { pagerState.animateScrollToPage(it) }
+                        scope.launch {
+                            pagerState.animateScrollToPage(it)
+                        }
                     }
                 ) {}
             }

@@ -4,9 +4,11 @@ package com.jorgesm.data.mappers
 import com.jorgesm.data.local.entity.LocalCharacterEntity
 import com.jorgesm.data.server.models.Result
 import com.jorgesm.data.utils.Const
+import com.jorgesm.domain.model.Character
+import com.jorgesm.domain.model.response.CharactersResponse
 
 
-fun Result.transformToDomain() = com.jorgesm.domain.model.Character(
+fun Result.transformToDomain() = Character(
     id = this.id,
     name = this.name ?: "",
     description = this.description ?: "",
@@ -22,11 +24,11 @@ fun Result.transformToDomain() = com.jorgesm.domain.model.Character(
     events = this.stories?.available?.toInt(),
 )
 
-fun List<Result>.transformToDomain(): List<com.jorgesm.domain.model.Character> =
+fun List<Result>.transformToDomain(): List<Character> =
     this.map { it.transformToDomain() }
 
 
-fun LocalCharacterEntity.transformFromDDBB() = com.jorgesm.domain.model.Character(
+fun LocalCharacterEntity.transformFromDDBB() = Character(
     id = this.id,
     name = this.name ?: "",
     description = this.description ?: "",
@@ -39,14 +41,14 @@ fun LocalCharacterEntity.transformFromDDBB() = com.jorgesm.domain.model.Characte
     events = this.events ?: 0,
 )
 
-fun List<LocalCharacterEntity>.transformFromDDBB(): com.jorgesm.domain.model.response.CharactersResponse {
-    val listCharacter: MutableList<com.jorgesm.domain.model.Character> = mutableListOf()
+fun List<LocalCharacterEntity>.transformFromDDBB(): CharactersResponse {
+    val listCharacter: MutableList<Character> = mutableListOf()
     this.map { listCharacter.add(it.transformFromDDBB()) }
-    return com.jorgesm.domain.model.response.CharactersResponse(listCharacter)
+    return CharactersResponse(listCharacter)
 }
 
 
-fun com.jorgesm.domain.model.Character.transformToDDBB() =
+fun Character.transformToDDBB() =
     LocalCharacterEntity(
         id = this.id,
         name = this.name,

@@ -2,6 +2,13 @@ package com.jorgesm.compose_marvel_api.modules
 
 import com.jorgesm.data.local.repositoryImpl.LocalRepositoryImpl
 import com.jorgesm.data.server.repositoryImpl.ApiServicesRepositoryImpl
+import com.jorgesm.usecases.local.GetLocalCharacterByIdUseCase
+import com.jorgesm.usecases.local.GetLocalCharacterListUseCase
+import com.jorgesm.usecases.local.GetLocalDataCountUseCase
+import com.jorgesm.usecases.local.SaveCharacterInDataBaseUseCase
+import com.jorgesm.usecases.local.UpdateLocalCharacterUseCase
+import com.jorgesm.usecases.remote.GetCharacterByIdUseCase
+import com.jorgesm.usecases.remote.GetCharactersListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,31 +21,36 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetCharacterListUseCase(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): com.jorgesm.usecases.remote.GetCharactersListUseCase =
-        com.jorgesm.usecases.remote.GetCharactersListUseCase(apiServicesRepositoryImpl)
+    fun provideGetCharacterListUseCase(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): GetCharactersListUseCase =
+        GetCharactersListUseCase(apiServicesRepositoryImpl)
 
     @Singleton
     @Provides
-    fun provideGetCharacterById(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): com.jorgesm.usecases.remote.GetCharacterByIdUseCase =
-        com.jorgesm.usecases.remote.GetCharacterByIdUseCase(apiServicesRepositoryImpl)
+    fun provideGetCharacterById(apiServicesRepositoryImpl: ApiServicesRepositoryImpl): GetCharacterByIdUseCase =
+        GetCharacterByIdUseCase(apiServicesRepositoryImpl)
 
     @Singleton
     @Provides
-    fun provideGetLocalCharacterListUseCase(localRepository: LocalRepositoryImpl): com.jorgesm.usecases.local.GetLocalCharacterListUseCase =
-        com.jorgesm.usecases.local.GetLocalCharacterListUseCase(localRepository)
+    fun provideGetLocalCharacterListUseCase(localRepository: LocalRepositoryImpl): GetLocalCharacterListUseCase =
+        GetLocalCharacterListUseCase(localRepository)
 
     @Singleton
     @Provides
-    fun provideSaveCharacterInDataBaseUseCase(localRepository: LocalRepositoryImpl): com.jorgesm.usecases.local.SaveCharacterInDataBaseUseCase =
-        com.jorgesm.usecases.local.SaveCharacterInDataBaseUseCase(localRepository)
+    fun provideSaveCharacterInDataBaseUseCase(localRepository: LocalRepositoryImpl): SaveCharacterInDataBaseUseCase =
+        SaveCharacterInDataBaseUseCase(localRepository)
 
     @Singleton
     @Provides
-    fun provideGetLocalCharacterByIdUseCase(localRepository: LocalRepositoryImpl): com.jorgesm.usecases.local.GetLocalCharacterByIdUseCase =
-        com.jorgesm.usecases.local.GetLocalCharacterByIdUseCase(localRepository)
+    fun provideGetLocalCharacterByIdUseCase(localRepository: LocalRepositoryImpl): GetLocalCharacterByIdUseCase =
+        GetLocalCharacterByIdUseCase(localRepository)
 
     @Singleton
     @Provides
-    fun provideUpdateLocalCharacterUseCase(localRepository: LocalRepositoryImpl): com.jorgesm.usecases.local.UpdateLocalCharacterUseCase =
-        com.jorgesm.usecases.local.UpdateLocalCharacterUseCase(localRepository)
+    fun provideUpdateLocalCharacterUseCase(localRepository: LocalRepositoryImpl): UpdateLocalCharacterUseCase =
+        UpdateLocalCharacterUseCase(localRepository)
+
+    @Singleton
+    @Provides
+    fun provideGetLocalDataCountUseCase(localRepository: LocalRepositoryImpl): GetLocalDataCountUseCase =
+        GetLocalDataCountUseCase(localRepository)
 }

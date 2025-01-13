@@ -8,5 +8,6 @@ import javax.inject.Inject
 class GetLocalCharacterListUseCase @Inject constructor(
     private val localRepository: LocalRepository
 ) {
-    operator fun invoke(): Flow<CharactersResponse> = localRepository.getAllCharacters()
+    operator fun invoke(start:Int, finish: Int): Flow<CharactersResponse> =
+        localRepository.getAllCharacters(start, finish)
 }
