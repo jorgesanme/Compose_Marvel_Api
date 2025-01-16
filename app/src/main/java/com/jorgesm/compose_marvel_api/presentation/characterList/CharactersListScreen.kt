@@ -18,7 +18,6 @@ fun CharactersListScreen(
 ) {
     val list: CharactersResponse by mainViewModel.list.collectAsStateWithLifecycle()
     val isLoading: Boolean by mainViewModel.isLoading.collectAsStateWithLifecycle()
-    val initialPage: Int by mainViewModel.initList.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) { mainViewModel.getLocalDataList() }
     if (isLoading) {
@@ -26,7 +25,6 @@ fun CharactersListScreen(
     } else {
         CarouselCard(
             list = list.result,
-            initialPage = initialPage,
             navigateToDetail = navigateToDetail,
         ) { mainViewModel.setNewOffset() }
     }

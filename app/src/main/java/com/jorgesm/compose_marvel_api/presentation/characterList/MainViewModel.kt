@@ -21,8 +21,8 @@ class MainViewModel @Inject constructor(
     private val saveCharacterInDataBaseUseCase: SaveCharacterInDataBaseUseCase,
     private val getLocalDataCount: GetLocalDataCountUseCase
 ) : ViewModel() {
-    companion object{
-        const val NUMBER_OFFSET_PAGE = 10
+    companion object {
+        const val NUMBER_OFFSET_PAGE = 5
     }
 
     private val _list = MutableStateFlow(CharactersResponse(listOf()))
@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
 
     fun getLocalDataList() {
         viewModelScope.launch {
-            getLocalCharacterListUseCase.invoke(_initList.value+1, _offset.value).collect {
+            getLocalCharacterListUseCase.invoke(_initList.value + 1, _offset.value).collect {
                 _list.emit(it)
             }
         }
@@ -64,11 +64,10 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _initList.emit(_initList.value + NUMBER_OFFSET_PAGE)
             _offset.emit(_offset.value + NUMBER_OFFSET_PAGE)
-            if (getLocalDataCount.invoke() == _offset.value) {
+            if (getLocalDataCount.invoke() == _offset.value)
                 getRemoteCharacterList()
-            } else {
+            else
                 getLocalDataList()
-            }
         }
     }
 }
