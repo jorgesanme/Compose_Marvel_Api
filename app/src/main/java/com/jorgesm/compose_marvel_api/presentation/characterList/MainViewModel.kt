@@ -1,6 +1,5 @@
 package com.jorgesm.compose_marvel_api.presentation.characterList
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesm.domain.model.response.CharactersResponse
@@ -33,20 +32,14 @@ class MainViewModel @Inject constructor(
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _offset = MutableStateFlow(NUMBER_OFFSET_PAGE)
-    val offset: StateFlow<Int> get() = _offset
 
     private val _initList = MutableStateFlow(0)
-    val initList: StateFlow<Int> get() = _initList
 
     private val _isPreviousArrowEnable = MutableStateFlow<Boolean>(false)
     val isPreviousArrowEnable: StateFlow<Boolean> = _isPreviousArrowEnable
 
 
-    init {
-        getRemoteCharacterList()
-    }
-
-    private fun getRemoteCharacterList() {
+     fun getRemoteCharacterList() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.emit(true)
             getCharactersListUseCase(_offset.value.toString()).result.let {
@@ -68,6 +61,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _initList.emit(_initList.value + NUMBER_OFFSET_PAGE)
             _offset.emit(_offset.value + NUMBER_OFFSET_PAGE)
+            _isPreviousArrowEnable.emit(true)
             if (getLocalDataCountUseCase() == _offset.value)
                 getRemoteCharacterList()
             else
@@ -77,23 +71,19 @@ class MainViewModel @Inject constructor(
 
     fun searchPreviousList() {
         viewModelScope.launch {
-            val dbCount = getLocalDataCountUseCase()
             val checkDataBase = checkFirstRowInDDBB(getLocalDataCountUseCase(), _initList.value)
             if (checkDataBase) {
                 if (isPossibleToGetPreviousList(_initList.value, _offset.value)) {
                     _initList.emit(_initList.value - NUMBER_OFFSET_PAGE)
                     _offset.emit(_offset.value - NUMBER_OFFSET_PAGE)
                     getLocalDataList()
-                } else {
-                    Log.i("yo", "el initList es muy bajo: ${_initList.value}")
                 }
-                Log.i("yo", "Estas en el primer registro de la DB $dbCount")
             }
         }
     }
 
     private fun isPossibleToGetPreviousList(initList: Int, offset: Int): Boolean {
-        val isPossible= (initList >= NUMBER_OFFSET_PAGE && offset >= NUMBER_OFFSET_PAGE)
+        val isPossible = (initList >= NUMBER_OFFSET_PAGE && offset >= NUMBER_OFFSET_PAGE)
         viewModelScope.launch { _isPreviousArrowEnable.emit(isPossible) }
         return isPossible
     }

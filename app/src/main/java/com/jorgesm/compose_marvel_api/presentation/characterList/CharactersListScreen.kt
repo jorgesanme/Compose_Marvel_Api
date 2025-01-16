@@ -19,6 +19,7 @@ fun CharactersListScreen(
     val isLoading: Boolean by mainViewModel.isLoading.collectAsStateWithLifecycle()
     val isPreviousArrowEnable: Boolean by mainViewModel.isPreviousArrowEnable.collectAsStateWithLifecycle()
 
+    LaunchedEffect(key1 = Unit) {mainViewModel.getRemoteCharacterList() }
     LaunchedEffect(key1 = Unit) { mainViewModel.getLocalDataList() }
     if (isLoading) {
         LoadingIndicator()

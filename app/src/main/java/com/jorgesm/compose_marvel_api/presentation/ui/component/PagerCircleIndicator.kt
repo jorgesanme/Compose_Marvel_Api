@@ -36,7 +36,7 @@ fun PagerCircleIndicator(pageCount: Int, pagerState: PagerState, scope: Coroutin
             val color = if (pagerState.currentPage == iteration)
                 colorResource(R.color.marvel_red)
             else
-                colorResource(R.color.marvel_red_opaque)
+                colorResource(R.color.marvel_grey_opaque)
             Box(modifier = Modifier
                 .padding(2.dp)
                 .clip(CircleShape)

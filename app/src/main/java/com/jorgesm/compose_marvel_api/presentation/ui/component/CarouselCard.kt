@@ -1,8 +1,6 @@
 package com.jorgesm.compose_marvel_api.presentation.ui.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -74,7 +72,7 @@ fun CarouselCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ArrowButton(
-                isEnable = isPreviousArrowEnable && pagerState.currentPage > 0,
+                isEnable = isPreviousArrowEnable || pagerState.currentPage > 0,
                 iconVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.main_previous_arrow_content_description),
             ) {
@@ -84,7 +82,7 @@ fun CarouselCard(
                     else if (pagerState.currentPage == 0) {
                         searchPreviousList()
                         scope.launch {
-                            pagerState.scrollToPage(0)
+                            pagerState.scrollToPage(pagerState.pageCount-1)
                         }
                     }
                 }
@@ -133,7 +131,7 @@ fun CarouselCard(
             }
 
             ArrowButton(
-                isEnable = true /*pagerState.currentPage < pagerState.pageCount - 1*/,
+                isEnable = true ,
                 iconVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = stringResource(R.string.main_forward_arrow_content_description)
             ) {
@@ -150,30 +148,6 @@ fun CarouselCard(
             }
         }
 
-        if (pagerState.currentPage >= pagerState.pageCount - 1) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    "Ver Más",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp)
-                        .clickable {
-                            searchNewList()
-                            scope.launch {
-                                pagerState.scrollToPage(0)
-                            }
-                        },
-                    textAlign = TextAlign.Center,
-                    color = colorResource(R.color.marvel_red),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
         PagerCircleIndicator(pagerState.pageCount, pagerState, scope)
     }
 }
