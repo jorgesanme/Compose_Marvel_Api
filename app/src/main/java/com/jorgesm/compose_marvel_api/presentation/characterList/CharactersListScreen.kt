@@ -3,7 +3,6 @@ package com.jorgesm.compose_marvel_api.presentation.characterList
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jorgesm.compose_marvel_api.presentation.ui.component.CarouselCard
@@ -18,6 +17,7 @@ fun CharactersListScreen(
 ) {
     val list: CharactersResponse by mainViewModel.list.collectAsStateWithLifecycle()
     val isLoading: Boolean by mainViewModel.isLoading.collectAsStateWithLifecycle()
+    val isPreviousArrowEnable: Boolean by mainViewModel.isPreviousArrowEnable.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) { mainViewModel.getLocalDataList() }
     if (isLoading) {
@@ -25,8 +25,11 @@ fun CharactersListScreen(
     } else {
         CarouselCard(
             list = list.result,
+            isPreviousArrowEnable = isPreviousArrowEnable,
             navigateToDetail = navigateToDetail,
-        ) { mainViewModel.setNewOffset() }
+            searchPreviousList = { mainViewModel.searchPreviousList() },
+            searchNewList = { mainViewModel.searchNextList() }
+        )
     }
 }
 

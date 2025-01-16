@@ -3,31 +3,23 @@ package com.jorgesm.compose_marvel_api.presentation.ui.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -41,12 +33,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.jorgesm.compose_marvel_api.R
 import com.jorgesm.domain.model.Character
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
@@ -54,7 +44,9 @@ import kotlin.math.absoluteValue
 @Composable
 fun CarouselCard(
     list: List<Character>,
+    isPreviousArrowEnable: Boolean,
     navigateToDetail: (Long) -> Unit,
+    searchPreviousList: () -> Unit,
     searchNewList: () -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 0)
@@ -81,23 +73,23 @@ fun CarouselCard(
                 .weight(1f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(
-                enabled = pagerState.currentPage > 0,
-                colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = colorResource(R.color.marvel_red),
-                    disabledContentColor = colorResource(R.color.marvel_red_opaque)
-                ),
-                onClick = {
-                    scope.launch {
-                        if (pagerState.currentPage > 0 )
+            ArrowButton(
+                isEnable = isPreviousArrowEnable && pagerState.currentPage > 0,
+                iconVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.main_previous_arrow_content_description),
+            ) {
+                scope.launch {
+                    if (pagerState.currentPage > 0)
                         pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    else if (pagerState.currentPage == 0) {
+                        searchPreviousList()
+                        scope.launch {
+                            pagerState.scrollToPage(0)
+                        }
                     }
-                }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.main_previous_arrow_content_description),
-                )
+                }
             }
+
             HorizontalPager(
                 count = list.size,
                 state = pagerState,
@@ -138,27 +130,26 @@ fun CarouselCard(
                 ) {
                     CharacterItem(item = list[page], navigateToDetail)
                 }
-
             }
-            IconButton(
-                enabled = pagerState.currentPage < pagerState.pageCount - 1,
-                colors = IconButtonDefaults.iconButtonColors(
-                    contentColor = colorResource(R.color.marvel_red),
-                    disabledContentColor = colorResource(R.color.marvel_red_opaque)
-                ),
-                onClick = {
-                    scope.launch {
-                        if (pagerState.currentPage < pagerState.pageCount)
-                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+
+            ArrowButton(
+                isEnable = true /*pagerState.currentPage < pagerState.pageCount - 1*/,
+                iconVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = stringResource(R.string.main_forward_arrow_content_description)
+            ) {
+                scope.launch {
+                    if (pagerState.currentPage < pagerState.pageCount - 1)
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    else if (pagerState.currentPage == pagerState.pageCount - 1) {
+                        searchNewList()
+                        scope.launch {
+                            pagerState.scrollToPage(0)
+                        }
                     }
                 }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = stringResource(R.string.main_forward_arrow_content_description)
-                )
             }
         }
+
         if (pagerState.currentPage >= pagerState.pageCount - 1) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -173,9 +164,9 @@ fun CarouselCard(
                         .clickable {
                             searchNewList()
                             scope.launch {
-                                pagerState.scrollToPage(0, )
+                                pagerState.scrollToPage(0)
                             }
-                                   },
+                        },
                     textAlign = TextAlign.Center,
                     color = colorResource(R.color.marvel_red),
                     fontSize = 12.sp,
@@ -183,65 +174,9 @@ fun CarouselCard(
                 )
             }
         }
-
-        Row(Modifier.fillMaxSize().weight(0.1f)) {
-            Row(
-                modifier = Modifier
-                    .height(60.dp)
-                    .fillMaxWidth()
-                    .padding(start = 36.dp, end = 36.dp, top = 4.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                repeat(list.size) { it->
-                    val color = if (pagerState.currentPage == it)
-                        colorResource(R.color.marvel_red)
-                    else
-                        colorResource(R.color.marvel_red_opaque)
-                    Box(modifier = Modifier
-                        .padding(2.dp)
-                        .clip(CircleShape)
-                        .size(20.dp)
-                        .background(color)
-                        .clickable {
-                            scope.launch {
-                                pagerState.animateScrollToPage(it)
-                            }
-                        }
-                    ) {}
-                }
-            }
-//            MyCircleIndicator(pagerState.pageCount, circlePaperState,scope)
-        }
+        PagerCircleIndicator(pagerState.pageCount, pagerState, scope)
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun MyCircleIndicator(pageCount: Int, pagerState: PagerState, scope: CoroutineScope) {
-            Row(
-                modifier = Modifier
-                    .height(60.dp)
-                    .fillMaxWidth()
-                    .padding(start = 36.dp, end = 36.dp, top = 4.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                repeat(pageCount) {iteration ->
-                    val color = if (pagerState.currentPage == iteration)
-                        colorResource(R.color.marvel_red)
-                    else
-                        colorResource(R.color.marvel_red_opaque)
-                    Box(modifier = Modifier
-                        .padding(2.dp)
-                        .clip(CircleShape)
-                        .size(20.dp)
-                        .background(color)
-                        .clickable {
-                            scope.launch {
-                                pagerState.animateScrollToPage(iteration)
-                            }
-                        }
-                    ) {}
-                }
-            }
-}
+
 

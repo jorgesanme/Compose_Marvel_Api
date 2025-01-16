@@ -1,5 +1,6 @@
 package com.jorgesm.compose_marvel_api.presentation.characterList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jorgesm.domain.model.response.CharactersResponse
@@ -19,7 +20,7 @@ class MainViewModel @Inject constructor(
     private val getCharactersListUseCase: GetCharactersListUseCase,
     private val getLocalCharacterListUseCase: GetLocalCharacterListUseCase,
     private val saveCharacterInDataBaseUseCase: SaveCharacterInDataBaseUseCase,
-    private val getLocalDataCount: GetLocalDataCountUseCase
+    private val getLocalDataCountUseCase: GetLocalDataCountUseCase
 ) : ViewModel() {
     companion object {
         const val NUMBER_OFFSET_PAGE = 5
@@ -37,6 +38,9 @@ class MainViewModel @Inject constructor(
     private val _initList = MutableStateFlow(0)
     val initList: StateFlow<Int> get() = _initList
 
+    private val _isPreviousArrowEnable = MutableStateFlow<Boolean>(false)
+    val isPreviousArrowEnable: StateFlow<Boolean> = _isPreviousArrowEnable
+
 
     init {
         getRemoteCharacterList()
@@ -45,7 +49,7 @@ class MainViewModel @Inject constructor(
     private fun getRemoteCharacterList() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.emit(true)
-            getCharactersListUseCase.invoke(_offset.value.toString()).result.let {
+            getCharactersListUseCase(_offset.value.toString()).result.let {
                 saveCharacterInDataBaseUseCase.invoke(it)
             }
             _isLoading.emit(false)
@@ -54,20 +58,48 @@ class MainViewModel @Inject constructor(
 
     fun getLocalDataList() {
         viewModelScope.launch {
-            getLocalCharacterListUseCase.invoke(_initList.value + 1, _offset.value).collect {
+            getLocalCharacterListUseCase(_initList.value + 1, _offset.value).collect {
                 _list.emit(it)
             }
         }
     }
 
-    fun setNewOffset() {
+    fun searchNextList() {
         viewModelScope.launch {
             _initList.emit(_initList.value + NUMBER_OFFSET_PAGE)
             _offset.emit(_offset.value + NUMBER_OFFSET_PAGE)
-            if (getLocalDataCount.invoke() == _offset.value)
+            if (getLocalDataCountUseCase() == _offset.value)
                 getRemoteCharacterList()
             else
                 getLocalDataList()
         }
+    }
+
+    fun searchPreviousList() {
+        viewModelScope.launch {
+            val dbCount = getLocalDataCountUseCase()
+            val checkDataBase = checkFirstRowInDDBB(getLocalDataCountUseCase(), _initList.value)
+            if (checkDataBase) {
+                if (isPossibleToGetPreviousList(_initList.value, _offset.value)) {
+                    _initList.emit(_initList.value - NUMBER_OFFSET_PAGE)
+                    _offset.emit(_offset.value - NUMBER_OFFSET_PAGE)
+                    getLocalDataList()
+                } else {
+                    Log.i("yo", "el initList es muy bajo: ${_initList.value}")
+                }
+                Log.i("yo", "Estas en el primer registro de la DB $dbCount")
+            }
+        }
+    }
+
+    private fun isPossibleToGetPreviousList(initList: Int, offset: Int): Boolean {
+        val isPossible= (initList >= NUMBER_OFFSET_PAGE && offset >= NUMBER_OFFSET_PAGE)
+        viewModelScope.launch { _isPreviousArrowEnable.emit(isPossible) }
+        return isPossible
+    }
+
+    private fun checkFirstRowInDDBB(dbCount: Int, initList: Int): Boolean {
+        val dbInitPosition = (dbCount - NUMBER_OFFSET_PAGE)
+        return dbInitPosition > initList
     }
 }
