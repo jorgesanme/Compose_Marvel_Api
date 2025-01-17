@@ -4,7 +4,7 @@ import com.jorgesm.data.local.database.CharactersDao
 import com.jorgesm.data.mappers.transformFromDDBB
 import com.jorgesm.data.mappers.transformToDDBB
 import com.jorgesm.domain.model.Character
-import com.jorgesm.domain.model.response.CharactersResponse
+import com.jorgesm.domain.repositoy.LocalRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -12,12 +12,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LocalRepositoryImpl @Inject constructor(private val charactersDao: CharactersDao) :
-    com.jorgesm.domain.repositoy.LocalRepository {
+    LocalRepository {
     override suspend fun saveAllCharacters(characters: List<Character>) {
         charactersDao.insertCharacters(characters = characters.map { it.transformToDDBB() })
     }
-    override fun getAllCharacters(start:Int, finish: Int): Flow<CharactersResponse> =
-        charactersDao.getAllCharacters(start, finish).map { it.transformFromDDBB() }
+    override fun getAllCharacters(): Flow<List<Character>> =
+        charactersDao.getAllCharacters().map { it.transformFromDDBB() }
 
     override suspend fun findCharacterById(item: Long): Character =
         withContext(Dispatchers.IO) {

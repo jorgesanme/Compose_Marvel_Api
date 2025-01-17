@@ -10,16 +10,16 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CharactersDao {
-    @Query("SELECT * FROM LocalCharacter WHERE localId BETWEEN :start AND :finish  ORDER BY localId ")
-    fun getAllCharacters(start:Int, finish: Int): Flow<List<LocalCharacterEntity>>
+    @Query("SELECT * FROM LocalCharacter")
+    fun getAllCharacters(): Flow<List<LocalCharacterEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCharacters(characters: List<LocalCharacterEntity>)
 
     @Query("SELECT * FROM LocalCharacter WHERE id = :id")
     suspend fun findCharacterById(id: Long): LocalCharacterEntity
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateCharacter(item: LocalCharacterEntity)
 
     @Query("SELECT COUNT(id) FROM LOCALCHARACTER")

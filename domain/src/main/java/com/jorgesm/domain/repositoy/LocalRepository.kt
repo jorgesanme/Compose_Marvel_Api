@@ -1,12 +1,11 @@
 package com.jorgesm.domain.repositoy
 
 import com.jorgesm.domain.model.Character
-import com.jorgesm.domain.model.response.CharactersResponse
 import kotlinx.coroutines.flow.Flow
 
 interface LocalRepository {
 
-    fun getAllCharacters(start:Int, finish: Int): Flow<CharactersResponse>
+    fun getAllCharacters(): Flow<List<Character>>
 
     suspend fun saveAllCharacters(characters: List<Character>)
 

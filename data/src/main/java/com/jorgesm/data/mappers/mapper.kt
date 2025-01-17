@@ -5,7 +5,6 @@ import com.jorgesm.data.local.entity.LocalCharacterEntity
 import com.jorgesm.data.server.models.Result
 import com.jorgesm.data.utils.Const
 import com.jorgesm.domain.model.Character
-import com.jorgesm.domain.model.response.CharactersResponse
 
 
 fun Result.transformToDomain() = Character(
@@ -41,10 +40,10 @@ fun LocalCharacterEntity.transformFromDDBB() = Character(
     events = this.events ?: 0,
 )
 
-fun List<LocalCharacterEntity>.transformFromDDBB(): CharactersResponse {
+fun List<LocalCharacterEntity>.transformFromDDBB(): List<Character> {
     val listCharacter: MutableList<Character> = mutableListOf()
     this.map { listCharacter.add(it.transformFromDDBB()) }
-    return CharactersResponse(listCharacter)
+    return listCharacter
 }
 
 

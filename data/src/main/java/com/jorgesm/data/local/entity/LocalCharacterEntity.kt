@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "LocalCharacter")
 data class LocalCharacterEntity(
     @PrimaryKey(autoGenerate = true)
-    val localId: Int = 0,
     val id: Long,
     val name: String?,
     val description: String?,

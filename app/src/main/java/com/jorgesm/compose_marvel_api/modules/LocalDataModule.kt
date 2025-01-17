@@ -30,6 +30,4 @@ class LocalDataModule {
     fun provideLocalRepositoryImpl(charactersDao: CharactersDao): LocalRepositoryImpl =
         LocalRepositoryImpl(charactersDao)
 
-
-
 }
