@@ -10,7 +10,7 @@ import com.jorgesm.usecases.remote.GetCharactersListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,19 +39,15 @@ class MainViewModel @Inject constructor(
 
     private val _offset = MutableStateFlow(0)
 
-    private val _initList = MutableStateFlow(0)
-    private val _endList = MutableStateFlow(STEP_ITEM_IN_LIST)
+    private val _startSubList = MutableStateFlow(0)
+    private val _endSubList = MutableStateFlow(STEP_ITEM_IN_LIST)
 
     private val _isPreviousArrowEnable = MutableStateFlow(false)
     val isPreviousArrowEnable: StateFlow<Boolean> = _isPreviousArrowEnable
 
-    private val _counter = MutableStateFlow(0)
-    val counter: StateFlow<Int> = _counter
+    private val _dbCounter = MutableStateFlow(0)
+    val dbCounter: StateFlow<Int> = _dbCounter
 
-
-    init {
-        getDDBBCount()
-    }
 
     private fun getRemoteCharacterList() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -60,28 +56,32 @@ class MainViewModel @Inject constructor(
             getLocalDataList()
             _isLoading.emit(false)
         }
+        getDDBBCount()
     }
 
     fun getLocalDataList() {
-        viewModelScope.launch {
+        getDDBBCount()
+        viewModelScope.launch(Dispatchers.IO) {
             getLocalCharacterListUseCase().collect {
                 if (it.isEmpty())
                     getRemoteCharacterList()
-                else
-                    _list.value = it.subList(_initList.value, _endList.value)
+                else if(_dbCounter.value == _startSubList.value) {
+                    getRemoteCharacterList()
+                }else
+                    _list.value = it.subList(_startSubList.value, _endSubList.value)
             }
         }
     }
 
     fun searchNextList() {
         viewModelScope.launch {
-            _isPreviousArrowEnable.emit(true)
-            if (_counter.value == _endList.value) {
+            _isPreviousArrowEnable.value = true
+            if (_dbCounter.value == _endSubList.value) {
                 _offset.value += NUMBER_OFFSET_PAGE
-                getRemoteCharacterList()
+                increaseListLimit()
+                getLocalDataList()
             } else {
-                _initList.value += STEP_ITEM_IN_LIST
-                _endList.value += STEP_ITEM_IN_LIST
+                increaseListLimit()
                 getLocalDataList()
             }
         }
@@ -89,15 +89,24 @@ class MainViewModel @Inject constructor(
 
     fun searchPreviousList() {
         viewModelScope.launch {
-            val checkDataBase = isFirstRowInDDBB(_counter.value, _initList.value)
+            val checkDataBase = isFirstRowInDDBB(_dbCounter.value, _startSubList.value)
             if (checkDataBase) {
-                if (isPossibleToGetPreviousList(_initList.value, _endList.value)) {
-                    _initList.value -= STEP_ITEM_IN_LIST
-                    _endList.value -= STEP_ITEM_IN_LIST
+                if (isPossibleToGetPreviousList(_startSubList.value, _endSubList.value)) {
+                    decreaseListLimit()
                     getLocalDataList()
                 }
             }
         }
+    }
+
+    private fun increaseListLimit(){
+        _startSubList.value += STEP_ITEM_IN_LIST
+        _endSubList.value += STEP_ITEM_IN_LIST
+    }
+
+    private fun decreaseListLimit(){
+        _startSubList.value -= STEP_ITEM_IN_LIST
+        _endSubList.value -= STEP_ITEM_IN_LIST
     }
 
     private fun isPossibleToGetPreviousList(initList: Int, endList: Int): Boolean {
@@ -122,10 +131,9 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun getDDBBCount() {
-        viewModelScope.launch {
-            _counter.value = countAllRegistersInDB()
-            delay(300)
+    fun getDDBBCount() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _dbCounter.value =  async { countAllRegistersInDB()}.await()
         }
     }
 }

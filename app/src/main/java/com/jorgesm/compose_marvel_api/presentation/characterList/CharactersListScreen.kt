@@ -17,10 +17,11 @@ fun CharactersListScreen(
     val list by mainViewModel.list.collectAsStateWithLifecycle()
     val isLoading: Boolean by mainViewModel.isLoading.collectAsStateWithLifecycle()
     val isPreviousArrowEnable: Boolean by mainViewModel.isPreviousArrowEnable.collectAsStateWithLifecycle()
-    val counter: Int by mainViewModel.counter.collectAsStateWithLifecycle()
+    val counter: Int by mainViewModel.dbCounter.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
         if (counter == 0)
+            mainViewModel.getDDBBCount()
             mainViewModel.getLocalDataList()
     }
 
