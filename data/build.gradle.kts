@@ -62,6 +62,7 @@ dependencies {
 
     /** Dagger-hilt */
     implementation (libs.hilt.android)
+    testImplementation(libs.junit.junit)
     kapt (libs.hilt.compiler)
     kapt (libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
@@ -71,6 +72,10 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation (libs.androidx.room.rxjava2)
+
+    /** Unit Test*/
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
