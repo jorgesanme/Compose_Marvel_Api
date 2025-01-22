@@ -40,9 +40,11 @@ El usuario puede alternar entre los distintos personajes, usando el swip (desliz
 
 
 ## IMAGEN
-<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/open.gif" width="160" height="350" />|
-<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/segundo.gif" width="160" height="350" />|
+| Permisos | Cargo de Datos | Detalles |
+| --- | --- | --- |
+|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/open.gif" width="160" height="350" />|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/segundo.gif" width="160" height="350" />|
 <img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/detalles.gif" width="160" height="350" />|
+<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/reload.gif" width="160" height="350" />|
 
 ---
 
