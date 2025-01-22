@@ -25,6 +25,9 @@ accompanist-pager = "0.20.0"
 kotlinSerialization = "1.6.3"
 jetbrainsKotlinJvm = "1.9.24"
 
+mockitoVersion =  "4.0.0"
+junitJunit = "4.12"
+
 [libraries]
 androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -63,6 +66,9 @@ retrofit2-converter-moshi = { module = "com.squareup.retrofit2:converter-moshi",
 accompanist-pager = {group = "com.google.accompanist", name ="accompanist-pager", version.ref ="accompanist-pager"}
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name ="kotlinx-serialization-json", version.ref ="kotlinSerialization"}
 
+mockito-kotlin = {group = "org.mockito.kotlin",name = "mockito-kotlin", version.ref ="mockitoVersion"}
+mockito-inline = {group = "org.mockito",name = "mockito-inline", version.ref ="mockitoVersion"}
+junit-junit = { group = "junit", name = "junit", version.ref = "junitJunit" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
