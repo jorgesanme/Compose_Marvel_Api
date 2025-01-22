@@ -12,7 +12,8 @@ interface ApiServices {
         @Query("ts") timeStamp: String =  Const.TIME_STAMP.toString(),
         @Query("apikey") apikey: String = Const.API_PUBLIC_KEY,
         @Query("hash") hash: String = Const.API_HAST ,
-        @Query("offset") offset: String
+        @Query("offset") offset: String,
+        @Query("orderBy") orderBy: String = Const.ORDER_BY
     ): CharacterResponseDTO
 
     @GET(Const.CHARACTER_BY_ID)

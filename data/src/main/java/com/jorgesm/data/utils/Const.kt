@@ -8,6 +8,7 @@ object Const {
     const val API_HAST = "69eec32c65edc1b0b8643e5ef3012087"
     const val TIME_STAMP = 1
     const val IMAGE_SITE = "/standard_medium"
+    const val ORDER_BY = "name"
 
     /**
      * No me gusta que este aquí, ya se encontrara un lugar seguro
