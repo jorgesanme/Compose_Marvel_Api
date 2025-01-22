@@ -1,6 +1,6 @@
 # This proyect 
 
-Una app construida con Kotlin y **Jetpack Compose** para consumir la API de [Marvel Comics](https://developer.marvel.com/)
+Una app construida con Kotlin y **Jetpack Compose** para consumir la API de [Marvel Comics](https://developer.marvel.com/). 
 
 ## DESCRIPTION
 Se desea demostrar los conocimientos en la creación de apps que consuman datos desde un backEnd. Para ello se ha diseñado una **Arquitectura Clean** usando los patrones **SOLID**.
@@ -40,11 +40,9 @@ El usuario puede alternar entre los distintos personajes, usando el swip (desliz
 
 
 ## IMAGEN
-| Permisos | Cargo de Datos | Detalles |
-| --- | --- | --- |
-|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/open.gif" width="160" height="350" />|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/segundo.gif" width="160" height="350" />|
-<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/detalles.gif" width="160" height="350" />|
-<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/reload.gif" width="160" height="350" />|
+| Start app | Pager Navigate | Navigate to Detalles | Reload Api|
+| --- | --- | --- | --- |
+|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/open.gif" width="160" height="350" />|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/segundo.gif" width="160" height="350" />|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/detalles.gif" width="160" height="350" />|<img src="https://github.com/jorgesanme/Compose_Marvel_Api/blob/main/images/reload.gif" width="160" height="350" />|
 
 ---
 
