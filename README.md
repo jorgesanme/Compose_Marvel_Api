@@ -34,7 +34,7 @@ Se configura un conjunto de objetos o data class serializables, que conformarán
 * MainScreen -> object
 * DetailsScreen -> data class (val itemId)
 
-Estos detinos son asignados a los composables que contiene el NavHost(). De esta forma se consigue una navegación fluida y controlable a base de lambdas.
+Estos destinos son asignados a los composables que contiene el NavHost(). De esta forma se consigue una navegación fluida y controlable a base de lambdas.
 
 El usuario puede alternar entre los distintos personajes, usando el swip (deslizar lateral), las flechas (botones) de navegación o el indicador de pagina (Pager Circle Indicator).  
 
